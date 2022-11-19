@@ -17,6 +17,10 @@ public abstract class Trailer {
         this.timePerLbs = timePerLbs;
     }
 
+    public Carrier getCarrier() {
+        return carrier;
+    }
+
     public void setLoad(int Load, Double time) {
         if (Load < 0 || time < 0) {
             throw new IllegalArgumentException("Load and time must both be positive");
@@ -28,5 +32,9 @@ public abstract class Trailer {
             this.load = Load;
             this.timePerLbs = time;
         }
+    }
+
+    public double timeToUnload() {
+        return load / timePerLbs;
     }
 }
