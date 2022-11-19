@@ -2,6 +2,7 @@ package org.scheduler;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class LoadingDock {
     //Class representing loading dock
@@ -34,7 +35,25 @@ public class LoadingDock {
         Trailers.clear();
     }
 
+    public void remove(Trailer t) {
+        Trailers.remove(t);
+    }
+
     public LinkedList<Trailer> trailers() {
         return new LinkedList<Trailer>(Trailers);
+    }
+
+    @Override
+    public String toString() {
+        try {
+            return trailers().stream()
+                    .map(t -> "Trailer: " + t.getCarrier().getName() + " Scheduled time " + t.getSchduledtime() + '\t')
+                    .reduce((s1, s2) -> s1 + s2)
+                    .get();
+        } catch (NoSuchElementException e) {
+            return "Empty Dock";
+        }
+
+
     }
 }
