@@ -129,7 +129,11 @@ public class Scheduler {
         return map;
     }
 
-    
+
+    @GetMapping("Schedule/test")
+    public String test(){
+        return "Test";
+    }
 
     @GetMapping("Schedule/Shipper")
     public Shipper getShipper() {
@@ -142,6 +146,10 @@ public class Scheduler {
     }
 
 
+    @GetMapping("Schedule/Shipper/docks")
+    public LoadingDock[] docks(){
+        return shipper.docks();
+    }
 
     @GetMapping("Schedule/notScheduled")
     public ArrayList<Trailer> getNotScheduled() {
