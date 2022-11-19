@@ -75,7 +75,7 @@ public class Carrier {
    public void setWaitTime(double waitTime) {
       this.waitTime = waitTime;
    }
-   
+
    public String toString() {
       return this.name + " " + this.DOTnum;
 
