@@ -65,4 +65,8 @@ public class Carrier {
       else return false;
    }
 
+   public String toString() {
+      return this.name + " " + this.DOTnum;
+   }
+
 }
