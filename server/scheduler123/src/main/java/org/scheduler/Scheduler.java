@@ -1,36 +1,67 @@
 package org.scheduler;
 
+import org.springframework.web.bind.annotation.*;
+
 import java.util.*;
 
+@RestController
 public class Scheduler {
 
     //Singleton Design Pattern
 
-    private static final Scheduler Instance = new Scheduler();
+
     private final ArrayList<Trailer> trailers;
 
 
     private final ArrayList<Trailer> notScheduled;
     private Shipper shipper;
 
-    private Scheduler() {
+    public Scheduler() {
         trailers = new ArrayList<Trailer>();
         notScheduled = new ArrayList<Trailer>();
     }
 
 
+    /*
+    @param Trailer t to be added
+     */
 
-    // Return single Scheduler instance
-    public static Scheduler instance() {
-        return Instance;
-    }
-
-    // Only adding trailer, sorting
-    public void addTrailer(Trailer t){
+    @PostMapping("Scheduler/Trailer/{trailer}")
+    public void addTrailer(@PathVariable("trailer") Trailer t){
         // Method to add a single trailer
         trailers.add(t);
         scheduleTrailer(t);
     }
+
+    @GetMapping("Scheduler/Carrier/{carrier}")
+    public Carrier getCarrier(@PathVariable("carrier") int carrier) {
+        for (Trailer t : trailers) {
+            if (t.getCarrier().getDOTnum() == carrier) {
+                return t.getCarrier();
+            }
+        }
+        return null;
+    }
+
+    @GetMapping("Scheduler/Trailer/{trailer}")
+    public Trailer getTrailer(@PathVariable("trailer") int DOTnum) {
+        for (Trailer t : trailers) {
+            if (t.getCarrier().getDOTnum() == DOTnum) {
+                return t;
+            }
+        }
+        return null;
+    }
+
+    @DeleteMapping("Scheduler/Trailer/{trailer}")
+    public void removeTrailer(@PathVariable("trailer") Trailer t) {
+        notScheduled.remove(t);
+        trailers.remove(t);
+        for (int i=0;i<shipper.docks().length; i++) {
+            shipper.docks()[0].remove(t);
+        }
+    }
+
 
     public void addTrailers(List<Trailer> ts) {
         // Method to add multiple trailers
@@ -61,7 +92,7 @@ public class Scheduler {
                 // Schedules Truck if it can be added immediately only if there is enough time
                 if (t.getCarrier().processWorkTime(t.timeToUnload())) {
                     d.add(t);
-                    t.setScheduledtime(d.getNextTimeAvailable());
+                    t.setScheduledtime(t.getPlannedArrivalTime());
                     d.setNextTimeAvailable(t.getPlannedArrivalTime() + t.timeToUnload());
                     return;
                 }
@@ -86,6 +117,7 @@ public class Scheduler {
 
     }
 
+
     public HashMap<Carrier, Double> waitTimes() {
         HashMap<Carrier, Double> map = new HashMap<>();
         trailers.forEach(t -> {
@@ -97,17 +129,21 @@ public class Scheduler {
         return map;
     }
 
+    
 
+    @GetMapping("Schedule/Shipper")
     public Shipper getShipper() {
         return shipper;
     }
 
+    @PutMapping("Schedule/Shipper")
     public void setShipper(Shipper shipper) {
         this.shipper = shipper;
     }
 
 
 
+    @GetMapping("Schedule/notScheduled")
     public ArrayList<Trailer> getNotScheduled() {
         return new ArrayList<>(notScheduled);
     }

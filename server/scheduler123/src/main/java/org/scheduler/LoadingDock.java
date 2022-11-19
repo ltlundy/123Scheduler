@@ -35,6 +35,10 @@ public class LoadingDock {
         Trailers.clear();
     }
 
+    public void remove(Trailer t) {
+        Trailers.remove(t);
+    }
+
     public LinkedList<Trailer> trailers() {
         return new LinkedList<Trailer>(Trailers);
     }
