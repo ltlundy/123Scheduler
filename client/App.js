@@ -23,7 +23,7 @@ export default function App() {
       <Tab.Screen name="Schedules" component={SchedulesScreen}        // Schedules Screen
       options={{
         tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="magnify" color={color} size={26}/>
+            <MaterialCommunityIcons name="calendar-month" color={color} size={26}/>
         ),
     }}/>
     </Tab.Navigator>

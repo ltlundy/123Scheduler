@@ -2,62 +2,79 @@ import React from 'react'
 import { View, ScrollView, StyleSheet, Image, Text } from 'react-native'
 import TouchableScale from 'react-native-touchable-scale';
 import * as Haptics from 'expo-haptics';
+import  MaterialCommunityIcons  from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const schedules = [
     {
-        name: 'test1',
+        name: 'Schedule1',
+        waitTime: '4h',
     },
     {
-        name: 'test2',
+        name: 'Schedule2',
+        waitTime: '4.8h',
     },
     {
-        name: 'test3',
+        name: 'Schedule3',
+        waitTime: '1h',
     },
     {
-        name: 'test4',
+        name: 'Schedule4',
+        waitTime: '4h',
     },
     {
-        name: 'test1',
+        name: 'Schedule1',
+        waitTime: '4h',
     },
     {
-        name: 'test2',
+        name: 'Schedule2',
+        waitTime: '4.8h',
     },
     {
-        name: 'test3',
+        name: 'Schedule3',
+        waitTime: '1h',
     },
     {
-        name: 'test4',
+        name: 'Schedule4',
+        waitTime: '4h',
     },
     {
-        name: 'test1',
+        name: 'Schedule1',
+        waitTime: '4h',
     },
     {
-        name: 'test2',
+        name: 'Schedule2',
+        waitTime: '4.8h',
     },
     {
-        name: 'test3',
+        name: 'Schedule3',
+        waitTime: '1h',
     },
     {
-        name: 'test4',
+        name: 'Schedule4',
+        waitTime: '4h',
     },
     {
-        name: 'test1',
+        name: 'Schedule1',
+        waitTime: '4h',
     },
     {
-        name: 'test2',
+        name: 'Schedule2',
+        waitTime: '4.8h',
     },
     {
-        name: 'test3',
+        name: 'Schedule3',
+        waitTime: '1h',
     },
     {
-        name: 'test4',
+        name: 'Schedule4',
+        waitTime: '4h',
     },
 ];
 
 
 function Schedules() {
     return (
-        <View style={{height: 600}} >
+        <View style={{height: 750}} >
             <View style={{ height: 200, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                 <Text>Schedules</Text>
             </View>
@@ -73,7 +90,11 @@ function Schedules() {
                         }}
                         activeScale={0.98}
                     >
-                        <Text style={styles.name}>{u.name}</Text>
+                        <MaterialCommunityIcons name="calendar-clock" size={26}/>
+                        <View style={styles.cardText}>
+                            <Text style={styles.name}>{u.name}</Text>
+                            <Text style={styles.waitTime}>{u.waitTime}</Text>
+                        </View>
                     </TouchableScale>
                 );
             })}
@@ -96,6 +117,7 @@ const styles = StyleSheet.create({
       borderRadius: 4,
       paddingTop: 25,
       paddingBottom: 25,
+      paddingLeft: 14,
       width: '90%',
     },
     shadowProp: {
@@ -105,6 +127,14 @@ const styles = StyleSheet.create({
         shadowRadius: 3,
         backgroundColor: "#FFF",
     },
+    cardText: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '90%',
+        paddingLeft: 20,
+        paddingRight: 20,
+    },
     image: {
       width: 30,
       height: 30,
@@ -113,7 +143,12 @@ const styles = StyleSheet.create({
     name: {
       fontSize: 16,
       marginTop: 5,
+      fontWeight: 'bold',
     },
+    waitTime: {
+        fontSize: 16,
+        marginTop: 5,
+      },
 });
 
 export default Schedules
