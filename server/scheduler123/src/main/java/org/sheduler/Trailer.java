@@ -10,11 +10,26 @@ public abstract class Trailer {
 
     private double timePerLbs;
 
+    public double getPlannedArrivalTime() {
+        return plannedArrivalTime;
+    }
+
+    public void setPlannedArrivalTime(double plannedArrivalTime) {
+        this.plannedArrivalTime = plannedArrivalTime;
+    }
+
+    private double plannedArrivalTime;
+
     public Trailer(int load, int loadCapacity, Carrier carrier, double timePerLbs) {
         this.load = load;
         this.loadCapacity = loadCapacity;
         this.carrier = carrier;
         this.timePerLbs = timePerLbs;
+    }
+
+    public Trailer(int loadCapacity, Carrier carrier) {
+        this.loadCapacity = loadCapacity;
+        this.carrier = carrier;
     }
 
     public Carrier getCarrier() {
