@@ -10,6 +10,9 @@ public abstract class Trailer {
 
     private double timePerLbs;
 
+    private double plannedArrivalTime; // Time of day
+
+
     public double getPlannedArrivalTime() {
         return plannedArrivalTime;
     }
@@ -18,7 +21,6 @@ public abstract class Trailer {
         this.plannedArrivalTime = plannedArrivalTime;
     }
 
-    private double plannedArrivalTime;
 
     public Trailer(int load, int loadCapacity, Carrier carrier, double timePerLbs) {
         this.load = load;
@@ -48,6 +50,8 @@ public abstract class Trailer {
             this.timePerLbs = time;
         }
     }
+
+
 
     public double timeToUnload() {
         return load / timePerLbs;

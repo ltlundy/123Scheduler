@@ -10,6 +10,8 @@ public class Carrier {
    private final int DOTnum;
    private final ELD eld;
 
+   private double waitTime = 0.00; // Not time of day
+
    private boolean active; // Whether the driver is currently on the job
 
 
@@ -63,6 +65,14 @@ public class Carrier {
          return true;
       }
       else return false;
+   }
+
+   public double getWaitTime() {
+      return waitTime;
+   }
+
+   public void setWaitTime(double waitTime) {
+      this.waitTime = waitTime;
    }
 
 }
