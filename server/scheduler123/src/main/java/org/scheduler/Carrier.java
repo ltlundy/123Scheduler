@@ -67,12 +67,17 @@ public class Carrier {
       else return false;
    }
 
+
    public double getWaitTime() {
       return waitTime;
    }
 
    public void setWaitTime(double waitTime) {
       this.waitTime = waitTime;
+
+   public String toString() {
+      return this.name + " " + this.DOTnum;
+
    }
 
 }

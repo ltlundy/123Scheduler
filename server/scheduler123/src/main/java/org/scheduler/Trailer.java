@@ -63,6 +63,7 @@ public abstract class Trailer {
         return load / timePerLbs;
     }
 
+
     public void setScheduledtime(double time) {
         if (time < 0) throw new IllegalArgumentException("Time must not be negative");
         scheduledUnloadTime = time;
@@ -70,5 +71,10 @@ public abstract class Trailer {
 
     public double getSchduledtime() {
         return scheduledUnloadTime;
+
+    public String toString() {
+        return this.getClass().getSimpleName() + " " + "load = " + this.load + " " + "capacity = " + this.loadCapacity + " "
+                + "carrier name, DOT = " + this.carrier + " " + "time per lbs = " + this.timePerLbs + " time of arrival = " + this.plannedArrivalTime;
+
     }
 }

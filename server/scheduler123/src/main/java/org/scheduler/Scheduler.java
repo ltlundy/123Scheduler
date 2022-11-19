@@ -4,22 +4,24 @@ import java.util.*;
 
 public class Scheduler {
 
-    //Singelton Design Pattern
+    //Singleton Design Pattern
 
     private static final Scheduler Instance = new Scheduler();
     private final ArrayList<Trailer> trailers;
-
-
-
     private Shipper shipper;
+
     private Scheduler() {
         trailers = new ArrayList<Trailer>();
     }
 
+
+
+    // Return single Scheduler instance
     public static Scheduler instance() {
         return Instance;
     }
 
+    // Only adding trailer, sorting
     public void addTrailer(Trailer t){
         // Method to add a single trailer
         trailers.add(t);

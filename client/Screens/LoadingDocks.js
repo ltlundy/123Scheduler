@@ -3,117 +3,83 @@ import { View, ScrollView, StyleSheet, Image, Modal, Pressable, Text } from 'rea
 import TouchableScale from 'react-native-touchable-scale';
 import * as Haptics from 'expo-haptics';
 import  MaterialCommunityIcons  from 'react-native-vector-icons/MaterialCommunityIcons';
-import ScheduleModal from './ScheduleModal';
+import LoadingModal from './LoadingModal';
 
-const schedules = [
+class Trailer {
+    constructor(name, type, icon, carrier) {
+      this.name = name;
+      this.type = type;
+      this.icon = icon;
+      this.carrier = carrier;
+    }
+}
+
+class Carrier {
+    constructor(name, DOTNum, ELD) {
+      this.name = name;
+      this.DOTNum = DOTNum;
+      this.ELD = ELD;
+    }
+}
+
+class ELD {
+    constructor(hoursOfService, maxHours) {
+      this.hoursOfService = hoursOfService;
+      this.maxHours = maxHours;
+    }
+}
+
+const docks = [
     {
-        name: 'Schedule1',
-        shipper: 'reefer',
-        waitTime: '4h',
+        name: 'Dock 1',
+        trailers: [new Trailer('Van', 'van', 'van-utility', new Carrier('Dave', 1, new ELD(1, 1))), 
+                new Trailer('Reefer', 'reefer', 'truck-cargo-container', new Carrier('John', 1, new ELD(1, 1))), 
+                new Trailer('Flatbed', 'flatbed', 'truck-flatbed', new Carrier('Joe', 1, new ELD(1, 1))), 
+            ],
+        nextAvailable: 1,
     },
     {
-        name: 'Schedule2',
-        shipper: 'flatbed',
-        waitTime: '4.8h',
-    },
-    {
-        name: 'Schedule3',
-        shipper: 'van',
-        waitTime: '1h',
-    },
-    {
-        name: 'Schedule4',
-        shipper: 'flatbed',
-        waitTime: '4h',
-    },
-    {
-        name: 'Schedule1',
-        shipper: 'flatbed',
-        waitTime: '4h',
-    },
-    {
-        name: 'Schedule2',
-        shipper: 'flatbed',
-        waitTime: '4.8h',
-    },
-    {
-        name: 'Schedule3',
-        shipper: 'flatbed',
-        waitTime: '1h',
-    },
-    {
-        name: 'Schedule4',
-        shipper: 'flatbed',
-        waitTime: '4h',
-    },
-    {
-        name: 'Schedule1',
-        shipper: 'flatbed',
-        waitTime: '4h',
-    },
-    {
-        name: 'Schedule2',
-        shipper: 'flatbed',
-        waitTime: '4.8h',
-    },
-    {
-        name: 'Schedule3',
-        shipper: 'flatbed',
-        waitTime: '1h',
-    },
-    {
-        name: 'Schedule4',
-        shipper: 'flatbed',
-        waitTime: '4h',
-    },
-    {
-        name: 'Schedule1',
-        shipper: 'flatbed',
-        waitTime: '4h',
-    },
-    {
-        name: 'Schedule2',
-        shipper: 'flatbed',
-        waitTime: '4.8h',
-    },
-    {
-        name: 'Schedule3',
-        shipper: 'flatbed',
-        waitTime: '1h',
-    },
-    {
-        name: 'Schedule4',
-        shipper: 'flatbed',
-        waitTime: '4h',
+        name: 'Dock 2',
+        trailers: [new Trailer('Van', 'van', 'van-utility', new Carrier('Max', 1, new ELD(1, 1)))],
+        nextAvailable: 1,
     },
 ];
 
+const totalTrailers = [new Trailer('Van', 'van', 'van-utility', new Carrier('Dave', 1, new ELD(1, 1))), 
+                        new Trailer('Reefer', 'reefer', 'truck-cargo-container', new Carrier('John', 1, new ELD(1, 1))), 
+                        new Trailer('Flatbed', 'flatbed', 'truck-flatbed', new Carrier('Joe', 1, new ELD(1, 1))),
+                        new Trailer('Van', 'van', 'van-utility', new Carrier('Max', 1, new ELD(1, 1))),
+                        new Trailer('Reefer', 'reefer', 'truck-cargo-container', new Carrier('MaxTwo', 1, new ELD(1, 1))), 
+                        new Trailer('Flatbed', 'flatbed', 'truck-flatbed', new Carrier('MaxThree', 1, new ELD(1, 1))), 
+]
 
-function Schedules() {
-    const [scheduleVisible, setScheduleVisible] = React.useState(false);
-    const [selectedSchedule, setSelectedSchedule] = React.useState(schedules[0]);
+
+function LoadingDocks() {
+    const [dockVisible, setDockVisible] = React.useState(false);
+    const [selectedDock, setSelectedDock] = React.useState(docks[0]);
     return (
         <View style={{height: 750}} >
-            <ScheduleModal 
-                selectedSchedule={selectedSchedule}
-                setSelectedSchedule={setSelectedSchedule}
-                scheduleVisible={scheduleVisible}
-                setScheduleVisible={setScheduleVisible}
+            <LoadingModal 
+                selectedDock={selectedDock}
+                setSelectedDock={setSelectedDock}
+                dockVisible={dockVisible}
+                setDockVisible={setDockVisible}
+                totalTrailers={totalTrailers}
             />
             <View style={{ height: 200, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                <Text>Schedules</Text>
+                <Text>Docks</Text>
             </View>
             <ScrollView contentContainerStyle={styles.container}>
-                {schedules.map((u, i) => {
+                {docks.map((u, i) => {
                 return (
                     <TouchableScale
                         key={i}
-                        style={[styles.schedule, styles.shadowProp]}
+                        style={[styles.dock, styles.shadowProp]}
                         onPress={() => {
                             console.log(u);
                             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-                            setSelectedSchedule(u);
-                            setScheduleVisible(true);
+                            setSelectedDock(u);
+                            setDockVisible(true);
                         }}
                         activeScale={0.98}
                     >
@@ -146,7 +112,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
-    schedule: {
+    dock: {
       flexDirection: 'row',
       marginBottom: 6,
       borderRadius: 4,
@@ -186,4 +152,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Schedules
+export default LoadingDocks
