@@ -14,7 +14,7 @@ public class DataGenerator {
     public void generateTestData(Integer pTestAmount) {
         for (int i = 0; i < pTestAmount; i++) {
             Carrier Ctemp = new Carrier(Integer.toString(i), rn.nextInt(100));
-            Ctemp.processWorkTime(rn.nextDouble()*11);
+            //Ctemp.processWorkTime(rn.nextDouble()*11);
 
             Trailer Ttemp = new Flatbed(rn.nextInt(500) + 500, 1000, Ctemp, 0.004 * rn.nextDouble() + 0.001);
             Ttemp.setPlannedArrivalTime(rn.nextDouble()*12.0 + 8);

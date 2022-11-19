@@ -60,7 +60,7 @@ public abstract class Trailer {
 
 
     public double timeToUnload() {
-        return load / timePerLbs;
+        return load * timePerLbs;
     }
 
 
@@ -72,7 +72,7 @@ public abstract class Trailer {
     public double getSchduledtime() {
         return scheduledUnloadTime;
     }
-    
+
     public String toString() {
         return this.getClass().getSimpleName() + " " + "load = " + this.load + " " + "capacity = " + this.loadCapacity + " "
                 + "carrier name, DOT = " + this.carrier + " " + "time per lbs = " + this.timePerLbs + " time of arrival = " + this.plannedArrivalTime;

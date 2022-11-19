@@ -8,10 +8,14 @@ public class Scheduler {
 
     private static final Scheduler Instance = new Scheduler();
     private final ArrayList<Trailer> trailers;
+
+
+    private final ArrayList<Trailer> notScheduled;
     private Shipper shipper;
 
     private Scheduler() {
         trailers = new ArrayList<Trailer>();
+        notScheduled = new ArrayList<Trailer>();
     }
 
 
@@ -34,7 +38,7 @@ public class Scheduler {
         scheduleTrailers(ts);
     }
 
-    public void scheduleTrailers(List<Trailer> ts) {
+    private void scheduleTrailers(List<Trailer> ts) {
         // Will sort trailers before adding them
         ts.sort(Comparator.comparing(Trailer::getPlannedArrivalTime)
                 .thenComparing(t -> t.getCarrier().workTimeRemaining()));
@@ -45,10 +49,11 @@ public class Scheduler {
         // Clears all the loading docks
         Arrays.stream(shipper.docks()).forEach(LoadingDock::clear);
         // Will Schedule all the trailers
+        notScheduled.clear();
         scheduleTrailers(trailers);
     }
 
-    public void scheduleTrailer(Trailer t) {
+    private void scheduleTrailer(Trailer t) {
         boolean scheduled = false;
         // Tries to see if trailer can be added to each loading dock immediately
         for (LoadingDock d : shipper.docks()) {
@@ -58,12 +63,11 @@ public class Scheduler {
                     d.add(t);
                     t.setScheduledtime(d.getNextTimeAvailable());
                     d.setNextTimeAvailable(t.getPlannedArrivalTime() + t.timeToUnload());
-                    scheduled = true;
-                    break;
+                    return;
                 }
             }
         }
-        if (!scheduled) {
+
             // If it cant be scheduled right away then will add to first available slot
             LoadingDock toAdd = Arrays.stream(shipper.docks()).reduce((d1, d2) -> (d2.getNextTimeAvailable() > d1.getNextTimeAvailable()) ? d1 : d2).get();
             // Check if the truck can be scheduled
@@ -74,10 +78,23 @@ public class Scheduler {
                 t.setScheduledtime(toAdd.getNextTimeAvailable());
                 toAdd.setNextTimeAvailable(t.timeToUnload() + toAdd.getNextTimeAvailable());
                 t.getCarrier().setWaitTime(waitTime);
-
+            }
+            else {
+                notScheduled.add(t);
             }
 
-        }
+
+    }
+
+    public HashMap<Carrier, Double> waitTimes() {
+        HashMap<Carrier, Double> map = new HashMap<>();
+        trailers.forEach(t -> {
+            if (!notScheduled.contains(t)) {
+                map.put(t.getCarrier(), t.getCarrier().getWaitTime());
+            }
+            else map.put(t.getCarrier(), -1.00);
+        });
+        return map;
     }
 
 
@@ -91,4 +108,7 @@ public class Scheduler {
 
 
 
+    public ArrayList<Trailer> getNotScheduled() {
+        return new ArrayList<>(notScheduled);
+    }
 }
