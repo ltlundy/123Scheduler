@@ -16,7 +16,7 @@ public class DataGenerator {
         for (int i = 0; i < pTestAmount; i++) {
             Carrier temp = new Carrier(Integer.toString(i), rn.nextInt(100));
             temp.processWorkTime(rn.nextDouble());
-            data.add(new Flatbed(rn.nextInt(1000) + 1, 1000, temp, 0.2 * rn.nextDouble()));
+            data.add(new Flatbed(rn.nextInt(1000) + 1, 1000, temp, 0.005 * rn.nextDouble()));
         }
     }
 
