@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import HomeScreen from './Screens/Home';
 import SchedulesScreen from './Screens/Schedules';
 import LoadingDocks from './Screens/LoadingDocks';
+import Carriers from './Screens/Carriers';
 
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
@@ -31,6 +32,12 @@ export default function App() {
       options={{
         tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="upload" color={color} size={26}/>
+        ),
+    }}/>
+    <Tab.Screen name="Carriers" component={Carriers}        // Schedules Screen
+      options={{
+        tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="human-male-board" color={color} size={26}/>
         ),
     }}/>
     </Tab.Navigator>

@@ -1,12 +1,19 @@
 import React from 'react'
 import { View, ScrollView, StyleSheet, Image, Modal, Pressable, Text } from 'react-native'
 import TouchableScale from 'react-native-touchable-scale';
+import MapView, { Marker } from 'react-native-maps';
 import * as Haptics from 'expo-haptics';
 import  MaterialCommunityIcons  from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
 function LoadingModal(props) {
   const [key, setKey] = React.useState(1);
+  const [mapRegion, setmapRegion] = React.useState({
+    latitude: 45.501690,
+    longitude: -73.567253,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  });
 
   const CurrentTrailersList = (props) => {
     return (
@@ -37,50 +44,6 @@ function LoadingModal(props) {
         </ScrollView>
     )
   }
-  
-  const AddTrailersList = (props) => {
-    
-    return (
-      <ScrollView contentContainerStyle={{ height: 300 }}>
-                {props.totalTrailers.map((u, i) => {
-                    return (
-                        <View
-                            key={i}
-                            style={[styles.allTrailers, styles.shadowProp, {backgroundColor: dockHasTrailer(u) ? 'grey' : 'white'}]}
-                        >
-                            <View style={styles.cardText}>
-                              <View style={styles.row}>
-                                <MaterialCommunityIcons name={`${u.icon}`} size={26}/>  
-                                <Text style={styles.name}>{u.carrier.name}'s {u.name}</Text>  
-                              </View>
-                              <View style={styles.row}>
-                                <Text>{u.carrier.ELD.hoursOfService}h (Max {u.carrier.ELD.maxHours}h)</Text> 
-                              </View>
-                              <TouchableScale
-                                style={styles.row}
-                                onPress={() => {
-                                    console.log(u);
-                                    if (!dockHasTrailer(u)) {
-                                      props.selectedDock.trailers.push(u);
-                                      setKey(Math.random());
-                                      props.setKey(Math.random());
-                                    }
-                                }}
-                                activeScale={0.90}
-                              >
-                                <MaterialCommunityIcons name={'plus'} size={22}/>
-                              </TouchableScale>
-                            </View>
-                        </View>
-                      );
-                })}
-        </ScrollView>
-    )
-  }
-  
-  const dockHasTrailer = (trailer) => {
-    return props.selectedDock.trailers.includes(trailer);
-  }
 
     return (
         <Modal
@@ -93,16 +56,24 @@ function LoadingModal(props) {
         >
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-                <Text style={styles.modalTitle}>{props.selectedDock.name}</Text>
-                <Text style={{ fontSize: 18, fontWeight: 'bold', margin: 10 }}>Current</Text>
+                <Text style={styles.modalTitle}>{props.selectedDock.name.toUpperCase()}</Text>
                 <CurrentTrailersList selectedDock={props.selectedDock} />
-                <Text style={{ fontSize: 18, fontWeight: 'bold', margin: 10 }}>Available</Text>
-                <AddTrailersList selectedDock={props.selectedDock} totalTrailers={props.totalTrailers} setKey={setKey} />
+                <MapView
+                  style={{ alignSelf: 'center', height: '40%', marginBottom: 20, borderRadius: 10, width: '90%' }}
+                  region={mapRegion}
+                >
+                  <View style={styles.mapOverlayTime}>
+                    <Text style={{ fontWeight: 'bold', margin: 7 }}>
+                      Est. Arrival Time: 1h
+                    </Text>
+                  </View>
+                  <Marker coordinate={mapRegion} title={`${props.selectedDock.name}`} />
+                </MapView>
                 <Pressable
                   style={[styles.button, styles.buttonClose]}
                   onPress={() => props.setDockVisible(!props.dockVisible)}
                 >
-                  <Text style={styles.textStyle}>Close</Text>
+                  <Text style={styles.textStyle}>Done</Text>
                 </Pressable>
               </View>
             </View>
@@ -112,8 +83,8 @@ function LoadingModal(props) {
 
 const styles = StyleSheet.create({
     container: {
-        alignItems:'center', 
-        justifyContent:'center',
+      alignItems:'center', 
+      justifyContent:'center',
     },
     fonts: {
       marginBottom: 8,
@@ -158,7 +129,8 @@ const styles = StyleSheet.create({
         elevation: 2
       },
       buttonClose: {
-        backgroundColor: "#595959",
+        backgroundColor: '#FF9700',
+        width: '90%',
       },
       textStyle: {
         color: "white",
@@ -173,7 +145,13 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         fontSize: 30,
         textAlign: "center",
-        fontWeight: 'bold',
+        fontWeight: '700',
+      },
+      mapOverlayTime: {
+        backgroundColor: 'white',
+        width: '50%',
+        height: 30,
+        borderRadius: '0 10 10 10',
       },
       modalText: {
         marginBottom: 15,

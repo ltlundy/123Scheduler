@@ -19,7 +19,7 @@ function ScheduleModal(props) {
                     style={[styles.button, styles.buttonClose]}
                     onPress={() => props.setScheduleVisible(!props.scheduleVisible)}
                 >
-                <Text style={styles.textStyle}>Close</Text>
+                <Text style={styles.textStyle}>Done</Text>
                 </Pressable>
             </View>
             </View>

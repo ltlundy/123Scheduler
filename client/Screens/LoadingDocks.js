@@ -43,6 +43,13 @@ const docks = [
         trailers: [new Trailer('Van', 'van', 'van-utility', new Carrier('Max', 1, new ELD(1, 1)))],
         nextAvailable: 1,
     },
+    {
+        name: 'Dock 3',
+        trailers: [new Trailer('Van', 'van', 'van-utility', new Carrier('Dave', 1, new ELD(1, 1))),
+                new Trailer('Flatbed', 'flatbed', 'truck-flatbed', new Carrier('Joe', 1, new ELD(1, 1))), 
+            ],
+        nextAvailable: 1,
+    },
 ];
 
 const totalTrailers = [new Trailer('Van', 'van', 'van-utility', new Carrier('Dave', 1, new ELD(1, 1))), 
@@ -57,8 +64,49 @@ const totalTrailers = [new Trailer('Van', 'van', 'van-utility', new Carrier('Dav
 function LoadingDocks() {
     const [dockVisible, setDockVisible] = React.useState(false);
     const [selectedDock, setSelectedDock] = React.useState(docks[0]);
+
+    const AddTrailersList = () => {
+        return (
+          <ScrollView>
+            {totalTrailers.map((u, i) => {
+                return (
+                    <View
+                        key={i}
+                        style={[styles.allTrailers, styles.shadowProp, {backgroundColor: dockHasTrailer(u) ? 'grey' : 'white'}]}
+                    >
+                        <View style={styles.availableText}>
+                            <View style={styles.row}>
+                            <MaterialCommunityIcons style={{marginRight: 10}} name={`${u.icon}`} size={26}/>  
+                            <Text style={styles.name}>{u.carrier.name}'s {u.name}</Text>  
+                            </View>
+                            <TouchableScale
+                            style={[styles.row, styles.scheduleButton]}
+                            onPress={() => {
+                                console.log(u);
+                                if (!dockHasTrailer(u)) {
+                                    console.log(selectedDock)
+                                }
+                            }}
+                            activeScale={0.90}
+                            >
+                                <MaterialCommunityIcons name={'plus'} size={22} style={{ color: 'white' }}/>
+                                <Text style={{ color: 'white', fontWeight: '700' }}>SCHEDULE</Text>
+                            </TouchableScale>
+                        </View>
+                    </View>
+                    );
+            })}
+            </ScrollView>
+        )
+      }
+      
+      const dockHasTrailer = (trailer) => {
+        return selectedDock.trailers.includes(trailer);
+      }
+
+
     return (
-        <View style={{height: 750}} >
+        <View style={{height: 770, }} >
             <LoadingModal 
                 selectedDock={selectedDock}
                 setSelectedDock={setSelectedDock}
@@ -66,8 +114,13 @@ function LoadingDocks() {
                 setDockVisible={setDockVisible}
                 totalTrailers={totalTrailers}
             />
-            <View style={{ height: 200, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                <Text>Docks</Text>
+            <View style={{ marginTop: 40, marginLeft: 14, marginRight: 14, height: 100, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly'}}>
+                <Image
+                    style={{ width: 150, height: 40, }}
+                    source={require('../assets/SCHEDULER.png')}
+                />
+                <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 22, color: '#FF9700' }}>/</Text>
+                <Text style={{ color: 'white', fontWeight: '800', fontSize: 21, color: '#FF9700' }}>LOADING DOCKS</Text>
             </View>
             <ScrollView contentContainerStyle={styles.container}>
                 {docks.map((u, i) => {
@@ -83,18 +136,19 @@ function LoadingDocks() {
                         }}
                         activeScale={0.98}
                     >
-                        <MaterialCommunityIcons name="calendar-clock" size={26}/>
+                        <MaterialCommunityIcons name="office-building" size={26}/>
                         <View style={styles.cardText}>
-                            <Text style={styles.name}>{u.name}</Text>
-                            <View style={[styles.row, {width: 70}]}>
-                                <MaterialCommunityIcons name="truck-cargo-container" size={26}/>
-                                <Text style={styles.waitTime}>{u.waitTime}</Text>
-                            </View>
+                            <Text style={styles.dockName}>{u.name.toUpperCase()}</Text>
+                            <Text style={styles.waitTime}>Next Available: 1h</Text>
                         </View>
                     </TouchableScale>
                 );
             })}
             </ScrollView>
+            <View style={{ height: 370, alignItems: 'center' }}>
+                <Text style={{ fontSize: 20, fontWeight: '800', margin: 10, color: '#02B528' }}>AVAILABLE</Text>
+                <AddTrailersList selectedDock={selectedDock} totalTrailers={totalTrailers} />
+            </View>
         </View>
     )
 }
@@ -105,12 +159,27 @@ const styles = StyleSheet.create({
         justifyContent:'center',
     },
     fonts: {
-      marginBottom: 8,
+        marginBottom: 8,
     },
     row: {
         display: 'flex',
         flexDirection: 'row',
+        alignItems: 'center',
         justifyContent: 'space-between',
+    },
+    scheduleButton: {
+        backgroundColor: '#02B528',
+        borderRadius: 2,
+        padding: 8,
+    },
+    allTrailers: {
+        flexDirection: 'row',
+        marginBottom: 6,
+        borderRadius: 4,
+        paddingTop: 14,
+        paddingBottom: 14,
+        paddingLeft: 8,
+        width: '100%',
     },
     dock: {
       flexDirection: 'row',
@@ -136,10 +205,22 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         paddingRight: 20,
     },
+    availableText: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingLeft: 10,
+        width: '90%'
+    },
     image: {
       width: 30,
       height: 30,
       marginRight: 10,
+    },
+    dockName: {
+        fontSize: 18,
+        marginTop: 4,
+        fontWeight: 'bold',
     },
     name: {
       fontSize: 16,
