@@ -1,6 +1,5 @@
 package org.scheduler;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -14,9 +13,14 @@ public class DataGenerator {
 
     public void generateTestData(Integer pTestAmount) {
         for (int i = 0; i < pTestAmount; i++) {
-            Carrier temp = new Carrier(Integer.toString(i), rn.nextInt(100));
-            temp.processWorkTime(rn.nextDouble());
-            data.add(new Flatbed(rn.nextInt(1000) + 1, 1000, temp, 0.005 * rn.nextDouble()));
+            Carrier Ctemp = new Carrier(Integer.toString(i), rn.nextInt(100));
+            Ctemp.processWorkTime(rn.nextDouble()*11);
+
+            Trailer Ttemp = new Flatbed(rn.nextInt(500) + 500, 1000, Ctemp, 0.004 * rn.nextDouble() + 0.001);
+            Ttemp.setPlannedArrivalTime(rn.nextDouble()*12.0 + 8);
+
+
+            data.add(Ttemp);
         }
     }
 
