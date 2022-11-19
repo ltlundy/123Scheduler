@@ -1,4 +1,4 @@
-package org.sheduler;
+package org.scheduler;
 
 public class Shipper {
     //An individual or company that has a load/freight that needs to be shipped.

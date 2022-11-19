@@ -1,4 +1,4 @@
-package org.sheduler;
+package org.scheduler;
 
 public class Main {
     public static void main(String[] args) {

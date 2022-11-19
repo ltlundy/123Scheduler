@@ -1,12 +1,12 @@
-package org.sheduler;
+package org.scheduler;
 
 import java.util.ArrayList;
 
-public class Sheduler {
+public class Scheduler {
 
     //Singelton Design Pattern
 
-    private static final Sheduler Instance = new Sheduler();
+    private static final Scheduler Instance = new Scheduler();
     private final ArrayList<Trailer> trailers;
 
     public Shipper getShipper() {
@@ -18,11 +18,11 @@ public class Sheduler {
     }
 
     private Shipper shipper;
-    private Sheduler() {
-        trailers = new ArrayList();
+    private Scheduler() {
+        trailers = new ArrayList<Trailer>();
     }
 
-    public static Sheduler instance() {
+    public static Scheduler instance() {
         return Instance;
     }
 

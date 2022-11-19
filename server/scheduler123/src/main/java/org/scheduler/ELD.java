@@ -1,4 +1,4 @@
-package org.sheduler;
+package org.scheduler;
 
 public class ELD {
     //Electronic Logging Device

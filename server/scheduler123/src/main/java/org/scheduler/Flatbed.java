@@ -1,4 +1,4 @@
-package org.sheduler;
+package org.scheduler;
 
 public class Flatbed extends Trailer{
     public Flatbed(int load, int loadCapacity, Carrier carrier, int timePerLbs) {
