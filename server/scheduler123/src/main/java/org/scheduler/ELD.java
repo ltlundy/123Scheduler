@@ -4,8 +4,8 @@ public class ELD {
     //Electronic Logging Device
     // Used to monitor Hours of Service of a Carrier
 
-    private double hoursOfService;
-    private double maxHours;
+    private double hoursOfService; // Total Hours
+    private double maxHours; // Total hours
 
     public ELD(double hoursOfService, double maxHours) {
         this.hoursOfService = hoursOfService;
