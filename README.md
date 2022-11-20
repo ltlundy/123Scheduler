@@ -8,7 +8,7 @@ Liam, Vivek, Richard
 
 ##
 
-For this project we have decided to tackle the 123Loadboard of scheduleing wait times.
+For this project we have decided to tackle the 123Loadboard painpoint of scheduleing wait times.
 
 We devised an application that will allow for shipping companies to schedule deliveries in a way which will minimze wait times.
 
