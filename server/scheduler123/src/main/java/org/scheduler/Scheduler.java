@@ -92,17 +92,21 @@ public class Scheduler {
         boolean scheduled = false;
         // Tries to see if trailer can be added to each loading dock immediately
         for (LoadingDock d : shipper.docks()) {
-            if (t.getPlannedArrivalTime() > d.getNextTimeAvailable()) {
+            if (t.getPlannedArrivalTime() >= d.getNextTimeAvailable()) {
                 // Schedules Truck if it can be added immediately only if there is enough time
                 if (t.getCarrier().processWorkTime(t.timeToUnload())) {
                     d.add(t);
                     t.setScheduledtime(t.getPlannedArrivalTime());
                     d.setNextTimeAvailable(t.getPlannedArrivalTime() + t.timeToUnload());
-                    return;
+                    scheduled = true;
                 }
+                else {
+                    notScheduled.add(t);
+                }
+                return;
             }
         }
-
+        if (!scheduled) {
             // If it cant be scheduled right away then will add to first available slot
             LoadingDock toAdd = Arrays.stream(shipper.docks()).reduce((d1, d2) -> (d2.getNextTimeAvailable() > d1.getNextTimeAvailable()) ? d1 : d2).get();
             // Check if the truck can be scheduled
@@ -113,11 +117,10 @@ public class Scheduler {
                 t.setScheduledtime(toAdd.getNextTimeAvailable());
                 toAdd.setNextTimeAvailable(t.timeToUnload() + toAdd.getNextTimeAvailable());
                 t.getCarrier().setWaitTime(waitTime);
-            }
-            else {
+            } else {
                 notScheduled.add(t);
             }
-
+        }
 
     }
 
