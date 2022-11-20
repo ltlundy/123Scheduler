@@ -50,7 +50,11 @@ public class Carrier {
 
 
 
-   public boolean enoughTime(Double time) {
+   public void setWorkTime(double time) {
+      eld.setHoursOfService(time);
+   }
+
+   public boolean enoughTime(double time) {
       // Takes amount of time and returns if the worker has enough work time remaining for that task
       if (time < 0) {
          throw new IllegalArgumentException("Time cannot be negative");
@@ -58,7 +62,7 @@ public class Carrier {
       return workTimeRemaining() >= time;
    }
 
-   public boolean processWorkTime(Double time) {
+   public boolean processWorkTime(double time) {
       // Adds amount of work time to time worked if there is enough time remaining, if not does nothing
       if (enoughTime(time)) {
          eld.setHoursOfService(eld.getHoursOfService() + time);

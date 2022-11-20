@@ -27,7 +27,7 @@ public class Scheduler {
 
 
     /*
-    @param Trailer t to be added
+     * @param Trailer t to be added
      */
 
     @PostMapping("scheduler/trailer")
@@ -37,6 +37,10 @@ public class Scheduler {
         scheduleTrailer(t);
     }
 
+    /*
+    * @param DOTnum, department of transportation number of the carrier
+    * @return Carrier
+     */
     @GetMapping("scheduler/carrier/{DOTnum}")
     public Carrier getCarrier(@PathVariable("DOTnum") int DOTnum) {
         for (Trailer t : trailers) {
@@ -90,7 +94,6 @@ public class Scheduler {
     }
 
     private void scheduleTrailer(Trailer t) {
-        boolean scheduled = false;
         // Tries to see if trailer can be added to each loading dock immediately
         for (LoadingDock d : shipper.docks()) {
             if (t.getPlannedArrivalTime() >= d.getNextTimeAvailable()) {
@@ -99,9 +102,9 @@ public class Scheduler {
                     d.add(t);
                     t.setScheduledtime(t.getPlannedArrivalTime());
                     d.setNextTimeAvailable(t.getPlannedArrivalTime() + t.timeToUnload());
-                    scheduled = true;
                 }
                 else {
+                    // If it cant be scheduled then will add to the not scheduled list
                     notScheduled.add(t);
                 }
                 return;
@@ -118,11 +121,19 @@ public class Scheduler {
             toAdd.setNextTimeAvailable(t.timeToUnload() + toAdd.getNextTimeAvailable());
             t.getCarrier().setWaitTime(waitTime);
         } else {
+            // If cannot be scheduled
             notScheduled.add(t);
         }
 
     }
 
+
+    @PutMapping("scheduler/times/{carrier}")
+    public void setWorkTime(@PathVariable("carrier") String name, @RequestParam("time") double time) {
+        for (Trailer t : trailers) {
+            if (t.getCarrier().getName().equalsIgnoreCase(name)) t.getCarrier().setWorkTime(time);
+        }
+    }
 
     public HashMap<Carrier, Double> waitTimes() {
         HashMap<Carrier, Double> map = new HashMap<>();
