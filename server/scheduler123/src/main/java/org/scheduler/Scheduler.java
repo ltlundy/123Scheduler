@@ -26,24 +26,24 @@ public class Scheduler {
     @param Trailer t to be added
      */
 
-    @PostMapping("Scheduler/Trailer/{trailer}")
-    public void addTrailer(@PathVariable("trailer") Trailer t){
+    @PostMapping("scheduler/trailer")
+    public void addTrailer(@RequestBody Trailer t){
         // Method to add a single trailer
         trailers.add(t);
         scheduleTrailer(t);
     }
 
-    @GetMapping("Scheduler/Carrier/{carrier}")
-    public Carrier getCarrier(@PathVariable("carrier") int carrier) {
+    @GetMapping("scheduler/carrier/{DOTnum}")
+    public Carrier getCarrier(@PathVariable("DOTnum") int DOTnum) {
         for (Trailer t : trailers) {
-            if (t.getCarrier().getDOTnum() == carrier) {
+            if (t.getCarrier().getDOTnum() == DOTnum) {
                 return t.getCarrier();
             }
         }
         return null;
     }
 
-    @GetMapping("Scheduler/Trailer/{trailer}")
+    @GetMapping("scheduler/trailer/{trailer}")
     public Trailer getTrailer(@PathVariable("trailer") int DOTnum) {
         for (Trailer t : trailers) {
             if (t.getCarrier().getDOTnum() == DOTnum) {
@@ -53,7 +53,7 @@ public class Scheduler {
         return null;
     }
 
-    @DeleteMapping("Scheduler/Trailer/{trailer}")
+    @DeleteMapping("scheduler/trailer/{trailer}")
     public void removeTrailer(@PathVariable("trailer") Trailer t) {
         notScheduled.remove(t);
         trailers.remove(t);
@@ -130,28 +130,28 @@ public class Scheduler {
     }
 
 
-    @GetMapping("Schedule/test")
+    @GetMapping("schedule/test")
     public String test(){
         return "Test";
     }
 
-    @GetMapping("Schedule/Shipper")
+    @GetMapping("schedule/shipper")
     public Shipper getShipper() {
         return shipper;
     }
 
-    @PutMapping("Schedule/Shipper")
-    public void setShipper(Shipper shipper) {
+    @PutMapping("schedule/shipper")
+    public void setShipper(@RequestBody Shipper shipper) {
         this.shipper = shipper;
     }
 
 
-    @GetMapping("Schedule/Shipper/docks")
+    @GetMapping("schedule/shipper/docks")
     public LoadingDock[] docks(){
         return shipper.docks();
     }
 
-    @GetMapping("Schedule/notScheduled")
+    @GetMapping("schedule/notScheduled")
     public ArrayList<Trailer> getNotScheduled() {
         return new ArrayList<>(notScheduled);
     }
