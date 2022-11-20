@@ -19,6 +19,10 @@ public class Scheduler {
     public Scheduler() {
         trailers = new ArrayList<Trailer>();
         notScheduled = new ArrayList<Trailer>();
+        // HardCoded Data
+        shipper = new Shipper(4);
+        DataGenerator gen = new DataGenerator(10);
+        addTrailers(gen.outputData());
     }
 
 
@@ -140,7 +144,7 @@ public class Scheduler {
         return shipper;
     }
 
-    @PutMapping("schedule/shipper")
+    @PostMapping ("schedule/shipper")
     public void setShipper(@RequestBody Shipper shipper) {
         this.shipper = shipper;
     }
