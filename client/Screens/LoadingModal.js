@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View, ScrollView, StyleSheet, Image, Modal, Pressable, Text } from 'react-native'
 import TouchableScale from 'react-native-touchable-scale';
 import MapView, { Marker } from 'react-native-maps';
@@ -15,10 +15,18 @@ function LoadingModal(props) {
     longitudeDelta: 0.0421,
   });
 
+  const icons = [
+    {name: 'Van', icon: 'van-utility'},
+    {name: 'Reefer', icon: 'truck-cargo-container'},
+    {name: 'Flatbed', icon: 'truck-flatbed'},
+]
+
   const CurrentTrailersList = (props) => {
     return (
       <ScrollView contentContainerStyle={{ height: 300 }}>
                 {props.selectedDock.trailers.map((u, i) => {
+                    let icon = icons[i % 3];
+                    let randomSchedule = (Math.random() * (24) + 1).toString().match(/^-?\d+(?:\.\d{0,1})?/)[0];
                     return (
                         <TouchableScale
                             key={i}
@@ -31,11 +39,12 @@ function LoadingModal(props) {
                         >
                             <View style={styles.cardText}>
                               <View style={styles.row}>
-                                <MaterialCommunityIcons name={`${u.icon}`} size={26}/>  
-                                <Text style={styles.name}>{u.carrier.name}'s {u.name}</Text>  
+                                <MaterialCommunityIcons name={`${icon.icon}`} size={26}/>  
+                                <Text style={styles.name}>{u.carrier.name}'s {icon.name}</Text>  
                               </View>
-                              <View style={styles.row}>
-                                <Text>{u.carrier.ELD.hoursOfService}h (Max {u.carrier.ELD.maxHours}h)</Text> 
+                              <View >
+                                <Text>Planned: {randomSchedule}h</Text> 
+                                <Text>Scheduled: {randomSchedule}h</Text> 
                               </View>
                             </View>
                         </TouchableScale>
@@ -56,18 +65,18 @@ function LoadingModal(props) {
         >
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-                <Text style={styles.modalTitle}>{props.selectedDock.name.toUpperCase()}</Text>
+                <Text style={styles.modalTitle}>Montréal EX. {props.idx}</Text>
                 <CurrentTrailersList selectedDock={props.selectedDock} />
                 <MapView
-                  style={{ alignSelf: 'center', height: '40%', marginBottom: 20, borderRadius: 10, width: '90%' }}
+                  style={{ alignSelf: 'center', height: '40%', marginBottom: 20, borderRadius: 10, width: '95%' }}
                   region={mapRegion}
                 >
                   <View style={styles.mapOverlayTime}>
                     <Text style={{ fontWeight: 'bold', margin: 7 }}>
-                      Est. Arrival Time: 1h
+                      Next Arrival Est.: 1h
                     </Text>
                   </View>
-                  <Marker coordinate={mapRegion} title={`${props.selectedDock.name}`} />
+                  <Marker coordinate={mapRegion} title={`Montréal Sample Dock`} />
                 </MapView>
                 <Pressable
                   style={[styles.button, styles.buttonClose]}
@@ -101,7 +110,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
       },
       modalView: {
-        width: '90%',
+        width: '95%',
         height: '70%',
         margin: 20,
         backgroundColor: "#ebebeb",
@@ -130,7 +139,7 @@ const styles = StyleSheet.create({
       },
       buttonClose: {
         backgroundColor: '#FF9700',
-        width: '90%',
+        width: '95%',
       },
       textStyle: {
         color: "white",
@@ -161,7 +170,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        width: '90%',
+        width: '95%',
         paddingLeft: 10,
         paddingRight: 10,
     },
