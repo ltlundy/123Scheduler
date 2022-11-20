@@ -75,7 +75,8 @@ public abstract class Trailer {
 
     public String toString() {
         return this.getClass().getSimpleName() + " " + "load = " + this.load + " " + "capacity = " + this.loadCapacity + " "
-                + "carrier name, DOT = " + this.carrier + " " + "time per lbs = " + this.timePerLbs + " time of arrival = " + this.plannedArrivalTime;
+                + "carrier name, DOT = " + this.carrier + " " + "time per lbs = " + this.timePerLbs + " time of arrival = " + this.plannedArrivalTime +
+                " Worktime left " + this.getCarrier().workTimeRemaining();
 
     }
 }

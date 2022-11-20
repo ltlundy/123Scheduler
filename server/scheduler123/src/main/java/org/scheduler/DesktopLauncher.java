@@ -15,7 +15,7 @@ public class DesktopLauncher {
         scheduler.addTrailers(gen.outputData());
         System.out.println(scheduler.getShipper());
         System.out.println(scheduler.waitTimes().values());
-        scheduler.getNotScheduled().forEach(t->System.out.println(t));
+        scheduler.getNotScheduled().forEach(System.out::println);
 
     }
 }

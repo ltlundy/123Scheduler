@@ -95,7 +95,7 @@ public class Scheduler {
         for (LoadingDock d : shipper.docks()) {
             if (t.getPlannedArrivalTime() >= d.getNextTimeAvailable()) {
                 // Schedules Truck if it can be added immediately only if there is enough time
-                if (t.getCarrier().processWorkTime(t.timeToUnload())) {
+                if (t.getCarrier().enoughTime(t.timeToUnload())) {
                     d.add(t);
                     t.setScheduledtime(t.getPlannedArrivalTime());
                     d.setNextTimeAvailable(t.getPlannedArrivalTime() + t.timeToUnload());
@@ -112,7 +112,7 @@ public class Scheduler {
         // Check if the truck can be scheduled
         double waitTime = toAdd.getNextTimeAvailable() - t.getPlannedArrivalTime();
         // If is able to be scheduled will be, will add wait time
-        if (t.getCarrier().processWorkTime(waitTime + t.timeToUnload())) {
+        if (t.getCarrier().enoughTime(waitTime + t.timeToUnload())) {
             toAdd.add(t);
             t.setScheduledtime(toAdd.getNextTimeAvailable());
             toAdd.setNextTimeAvailable(t.timeToUnload() + toAdd.getNextTimeAvailable());
@@ -175,5 +175,10 @@ public class Scheduler {
     @GetMapping("schedule/carriers")
     public Object[] getCarriers(){
         return trailers.stream().map(Trailer::getCarrier).toArray();
+    }
+
+    @GetMapping("schedule/trailers")
+    public Object[] getTrailers(){
+        return trailers.toArray();
     }
 }
