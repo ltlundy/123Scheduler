@@ -1,80 +1,105 @@
 import React from 'react'
-import { View, ScrollView, StyleSheet, Image, Text } from 'react-native'
+import { View, ScrollView, StyleSheet, Image, Modal, Pressable, Text } from 'react-native'
 import TouchableScale from 'react-native-touchable-scale';
 import * as Haptics from 'expo-haptics';
 import  MaterialCommunityIcons  from 'react-native-vector-icons/MaterialCommunityIcons';
+import ScheduleModal from './ScheduleModal';
 
 const schedules = [
     {
         name: 'Schedule1',
+        shipper: 'reefer',
         waitTime: '4h',
     },
     {
         name: 'Schedule2',
+        shipper: 'flatbed',
         waitTime: '4.8h',
     },
     {
         name: 'Schedule3',
+        shipper: 'van',
         waitTime: '1h',
     },
     {
         name: 'Schedule4',
+        shipper: 'flatbed',
         waitTime: '4h',
     },
     {
         name: 'Schedule1',
+        shipper: 'flatbed',
         waitTime: '4h',
     },
     {
         name: 'Schedule2',
+        shipper: 'flatbed',
         waitTime: '4.8h',
     },
     {
         name: 'Schedule3',
+        shipper: 'flatbed',
         waitTime: '1h',
     },
     {
         name: 'Schedule4',
+        shipper: 'flatbed',
         waitTime: '4h',
     },
     {
         name: 'Schedule1',
+        shipper: 'flatbed',
         waitTime: '4h',
     },
     {
         name: 'Schedule2',
+        shipper: 'flatbed',
         waitTime: '4.8h',
     },
     {
         name: 'Schedule3',
+        shipper: 'flatbed',
         waitTime: '1h',
     },
     {
         name: 'Schedule4',
+        shipper: 'flatbed',
         waitTime: '4h',
     },
     {
         name: 'Schedule1',
+        shipper: 'flatbed',
         waitTime: '4h',
     },
     {
         name: 'Schedule2',
+        shipper: 'flatbed',
         waitTime: '4.8h',
     },
     {
         name: 'Schedule3',
+        shipper: 'flatbed',
         waitTime: '1h',
     },
     {
         name: 'Schedule4',
+        shipper: 'flatbed',
         waitTime: '4h',
     },
 ];
 
 
 function Schedules() {
+    const [scheduleVisible, setScheduleVisible] = React.useState(false);
+    const [selectedSchedule, setSelectedSchedule] = React.useState(schedules[0]);
     return (
         <View style={{height: 750}} >
+            <ScheduleModal 
+                selectedSchedule={selectedSchedule}
+                setSelectedSchedule={setSelectedSchedule}
+                scheduleVisible={scheduleVisible}
+                setScheduleVisible={setScheduleVisible}
+            />
             <View style={{ height: 200, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                 <Text>Schedules</Text>
             </View>
@@ -85,15 +110,20 @@ function Schedules() {
                         key={i}
                         style={[styles.schedule, styles.shadowProp]}
                         onPress={() => {
-                            console.log('hi');
+                            console.log(u);
                             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                            setSelectedSchedule(u);
+                            setScheduleVisible(true);
                         }}
                         activeScale={0.98}
                     >
                         <MaterialCommunityIcons name="calendar-clock" size={26}/>
                         <View style={styles.cardText}>
                             <Text style={styles.name}>{u.name}</Text>
-                            <Text style={styles.waitTime}>{u.waitTime}</Text>
+                            <View style={[styles.row, {width: 70}]}>
+                                <MaterialCommunityIcons name="truck-cargo-container" size={26}/>
+                                <Text style={styles.waitTime}>{u.waitTime}</Text>
+                            </View>
                         </View>
                     </TouchableScale>
                 );
@@ -110,6 +140,11 @@ const styles = StyleSheet.create({
     },
     fonts: {
       marginBottom: 8,
+    },
+    row: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
     },
     schedule: {
       flexDirection: 'row',
@@ -148,7 +183,7 @@ const styles = StyleSheet.create({
     waitTime: {
         fontSize: 16,
         marginTop: 5,
-      },
+    },
 });
 
 export default Schedules

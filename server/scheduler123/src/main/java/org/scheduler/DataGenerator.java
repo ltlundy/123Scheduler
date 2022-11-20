@@ -17,6 +17,7 @@ public class DataGenerator {
 
     public void generateTestData(Integer pTestAmount) {
         for (int i = 0; i < pTestAmount; i++) {
+        
             Carrier Ctemp = new Carrier(nameList[rn.nextInt(nameList.length)], rn.nextInt(100));
             Ctemp.processWorkTime(rn.nextDouble()*11);
 
