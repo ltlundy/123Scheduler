@@ -154,12 +154,27 @@ public class Scheduler {
 
 
     @GetMapping("schedule/shipper/docks")
-    public LoadingDock[] docks(){
-        return shipper.docks();
+    public LinkedList[] docks(){
+        LoadingDock[] docks = shipper.docks();
+        LinkedList<Trailer>[] output = new LinkedList[docks.length];
+        for (int i=0; i<docks.length; i++) {
+            output[i] = docks[i].trailers();
+        }
+        return output;
+    }
+
+    @GetMapping("schedule/shipper/docks/{id}")
+    public List<Trailer> dockNum(@PathVariable("id") int id){
+        return shipper.docks()[id].trailers();
     }
 
     @GetMapping("schedule/notScheduled")
     public ArrayList<Trailer> getNotScheduled() {
         return new ArrayList<>(notScheduled);
+    }
+
+    @GetMapping("schedule/carriers")
+    public Object[] getCarriers(){
+        return trailers.stream().map(Trailer::getCarrier).toArray();
     }
 }
