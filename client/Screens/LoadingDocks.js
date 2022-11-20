@@ -55,6 +55,8 @@ const sampleCarriers = [
     {"dotnum": 34, "name": "Jane", "waitTime": 0}
 ];
 
+const ip = 'http://172.20.10.3:8080';
+
 const icons = [
     {name: 'Van', icon: 'van-utility'},
     {name: 'Reefer', icon: 'truck-cargo-container'},
@@ -82,7 +84,7 @@ function LoadingDocks() {
   
     async function getSchedules() {
       const response = await fetch(
-        'http://172.20.10.3:8080/schedule/shipper/docks',
+        ip + '/schedule/shipper/docks',
         {}
       ).then((data) => data.json())
       .then(json => {
@@ -110,7 +112,7 @@ function LoadingDocks() {
 
     async function getCarriers() {
         const response = await fetch(
-          'http://172.20.10.3:8080/schedule/carriers',
+         ip + '/schedule/carriers',
           {}
         ).then((data) => data.json())
         .then(json => {
@@ -122,7 +124,7 @@ function LoadingDocks() {
 
       async function scheduleTrailer(trailer) {
         const response = await fetch(
-            fetch('http://172.20.10.3:8080/scheduler/trailer', {
+            fetch(ip + '/scheduler/trailer', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
