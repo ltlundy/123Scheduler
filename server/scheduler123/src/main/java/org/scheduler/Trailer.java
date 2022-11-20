@@ -1,11 +1,15 @@
 package org.scheduler;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public abstract class Trailer {
 
     private int load; // LBS
 
+    @JsonProperty("loadCapacity")
     private final int loadCapacity;
 
+    @JsonProperty("carrier")
     private final Carrier carrier;
 
     private double timePerLbs;
