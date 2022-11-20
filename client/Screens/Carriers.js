@@ -19,6 +19,8 @@ const sampleCarriers = [
     {"dotnum": 34, "name": "Jane", "waitTime": 0}
 ];
 
+const ip = 'http://172.20.10.3:8080';
+
 const icons = [
     {name: 'Van', icon: 'van-utility'},
     {name: 'Reefer', icon: 'truck-cargo-container'},
@@ -44,7 +46,7 @@ function Carriers() {
 
     async function getCarriers() {
         const response = await fetch(
-          'http://172.20.10.3:8080/schedule/carriers',
+          ip + '/schedule/carriers',
           {}
         ).then((data) => data.json())
         .then(json => {
