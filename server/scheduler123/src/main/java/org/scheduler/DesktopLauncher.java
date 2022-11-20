@@ -10,6 +10,7 @@ public class DesktopLauncher {
         DataGenerator gen = new DataGenerator(10);
         System.out.println(gen.outputData());
         System.out.println(gen.outputData().get(0).getCarrier().workTimeRemaining());
+        Scheduler scheduler = new Scheduler();
         scheduler.setShipper(new Shipper(4));
         scheduler.addTrailers(gen.outputData());
         System.out.println(scheduler.getShipper());

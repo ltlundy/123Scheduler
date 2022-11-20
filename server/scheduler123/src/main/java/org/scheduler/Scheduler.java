@@ -80,6 +80,7 @@ public class Scheduler {
         ts.forEach(this::scheduleTrailer);
     }
 
+    @PutMapping("schedule/redo")
     public void redoSchedule() {
         // Clears all the loading docks
         Arrays.stream(shipper.docks()).forEach(LoadingDock::clear);
@@ -106,20 +107,18 @@ public class Scheduler {
                 return;
             }
         }
-        if (!scheduled) {
-            // If it cant be scheduled right away then will add to first available slot
-            LoadingDock toAdd = Arrays.stream(shipper.docks()).reduce((d1, d2) -> (d2.getNextTimeAvailable() > d1.getNextTimeAvailable()) ? d1 : d2).get();
-            // Check if the truck can be scheduled
-            double waitTime = toAdd.getNextTimeAvailable() - t.getPlannedArrivalTime();
-            // If is able to be scheduled will be, will add wait time
-            if (t.getCarrier().processWorkTime(waitTime + t.timeToUnload())) {
-                toAdd.add(t);
-                t.setScheduledtime(toAdd.getNextTimeAvailable());
-                toAdd.setNextTimeAvailable(t.timeToUnload() + toAdd.getNextTimeAvailable());
-                t.getCarrier().setWaitTime(waitTime);
-            } else {
-                notScheduled.add(t);
-            }
+        // If it cant be scheduled right away then will add to first available slot
+        LoadingDock toAdd = Arrays.stream(shipper.docks()).reduce((d1, d2) -> (d2.getNextTimeAvailable() > d1.getNextTimeAvailable()) ? d1 : d2).get();
+        // Check if the truck can be scheduled
+        double waitTime = toAdd.getNextTimeAvailable() - t.getPlannedArrivalTime();
+        // If is able to be scheduled will be, will add wait time
+        if (t.getCarrier().processWorkTime(waitTime + t.timeToUnload())) {
+            toAdd.add(t);
+            t.setScheduledtime(toAdd.getNextTimeAvailable());
+            toAdd.setNextTimeAvailable(t.timeToUnload() + toAdd.getNextTimeAvailable());
+            t.getCarrier().setWaitTime(waitTime);
+        } else {
+            notScheduled.add(t);
         }
 
     }
